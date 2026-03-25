@@ -1,0 +1,45 @@
+class Solution {
+public:
+    ListNode* reverseKGroup(ListNode* head, int k) {
+        if (!head || k == 1) return head;
+
+        ListNode dummy(0);
+        dummy.next = head;
+        ListNode *curr = &dummy, *next_group = &dummy, *prev_group = &dummy;
+
+        while (true) {
+            int count = 0;
+            // Check if there are at least k nodes left
+            while (next_group->next && count < k) {
+                next_group = next_group->next;
+                count++;
+            }
+
+            // If fewer than k nodes remain, we are done
+            if (count < k) break;
+
+            // Start of the current group to be reversed
+            ListNode* start = prev_group->next;
+            ListNode* next_cycle = next_group->next;
+
+            // Standard linked list reversal for k nodes
+            ListNode* prev = next_cycle;
+            ListNode* p = start;
+            for (int i = 0; i < k; ++i) {
+                ListNode* temp = p->next;
+                p->next = prev;
+                prev = p;
+                p = temp;
+            }
+
+            // Connect the reversed group back to the main list
+            prev_group->next = prev;
+            
+            // Prepare for the next group
+            prev_group = start;
+            next_group = start;
+        }
+
+        return dummy.next;
+    }
+};
