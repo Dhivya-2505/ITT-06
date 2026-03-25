@@ -1,0 +1,26 @@
+#include <stack>
+#include <string>
+
+class Solution {
+public:
+    bool isValid(std::string s) {
+        std::stack<char> st;
+        
+        for (char c : s) {
+            // If we encounter an opening bracket, we push the CLOSER we expect to see later
+            if (c == '(') st.push(')');
+            else if (c == '[') st.push(']');
+            else if (c == '{') st.push('}');
+            
+            // If we encounter a closing bracket
+            else {
+                // It must match the most recently pushed expected closer
+                if (st.empty() || st.top() != c) {
+                    return false;
+                }
+                st.pop(); 
+            }
+        }
+        return st.empty();
+    }
+};
