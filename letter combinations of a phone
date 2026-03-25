@@ -1,0 +1,29 @@
+class Solution {
+public:
+    vector<string> result;
+    // 1. Mapping based on a standard phone keypad
+    vector<string> board = {"", "", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
+
+    void backtrack(string digits, int index, string current) {
+        // 2. Base Case: If we've processed all digits, save the combination
+        if (index == digits.length()) {
+            result.push_back(current);
+            return;
+        }
+
+        // 3. Get letters for the current digit (e.g., '2' -> "abc")
+        string letters = board[digits[index] - '0'];
+
+        for (char c : letters) {
+            // 4. Recurse: Add current letter and move to the next digit index
+            backtrack(digits, index + 1, current + c);
+        }
+    }
+
+    vector<string> letterCombinations(string digits) {
+        if (digits.empty()) return {}; // Edge case: empty input
+        
+        backtrack(digits, 0, "");
+        return result;
+    }
+};
